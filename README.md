@@ -50,3 +50,10 @@ This library resolves both the base directory and the candidate path to their re
   - `PathGuard.resolve_safe(untrusted_path) -> pathlib.Path` — resolves and returns the path if inside the base; raises `PathTraversalError` otherwise.
   - `PathGuard.is_safe(untrusted_path) -> bool` — non-throwing variant.
 - `PathTraversalError` — subclass of `ValueError`, raised on escape attempts.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
